@@ -19,8 +19,14 @@ app.use(express.json())
 
 
 app.get("/", (require,response) =>{
-
-    response.render("index");
+    Pergunta.findAll({raw: true}).then(perguntas =>{
+        response.render("index",{
+            perguntas: perguntas
+        });
+    }).catch(()=>{
+        response.send("Houve um erro ao carregar as perguntas!")
+    });
+   
 });
 app.get("/perguntar", (require,response) =>{
 
@@ -29,7 +35,7 @@ app.get("/perguntar", (require,response) =>{
 app.post("/salvarpergunta", (require,response) =>{
     var titulo = require.body.titulo;
     var descricao = require.body.descricao;
-    
+
     Pergunta.create({
         titulo: titulo
         ,descricao: descricao
