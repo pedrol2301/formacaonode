@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const connection = require("./database/database");
 const Pergunta = require("./database/Pergunta");
+const Resposta = require("./database/Resposta");
 
 
 connection.authenticate().then(()=>{
@@ -15,11 +16,13 @@ connection.authenticate().then(()=>{
 app.set('view engine','ejs');// EJS COMO VIEW ENGINE
 app.use(express.static('public'));// Arquivos estaticos ex.: css,js e etc
 app.use(express.urlencoded({extended: false}));
-app.use(express.json())
+app.use(express.json());
 
 
 app.get("/", (require,response) =>{
-    Pergunta.findAll({raw: true}).then(perguntas =>{
+    Pergunta.findAll({raw: true, order: [
+        ['id','desc']
+    ]}).then(perguntas =>{
         response.render("index",{
             perguntas: perguntas
         });
@@ -41,10 +44,44 @@ app.post("/salvarpergunta", (require,response) =>{
         ,descricao: descricao
     }).then(()=>{
         response.redirect("/")
-    })
+    });
 
 });
+app.get("/pergunta/:id", (require,response) =>{
 
+    var id = require.params.id;
+    Pergunta.findOne({
+        where: {id:id}
+    }).then( pergunta =>{
+        if (pergunta != undefined) {
+
+            Resposta.findAll({
+                where:{
+                    perguntaId:pergunta.id
+                } 
+            }).then(respostas =>{
+                response.render('pergunta',{
+                    pergunta : pergunta,
+                    respostas : respostas
+                })
+            });
+        } else {
+            response.redirect("/")
+        }
+    });
+});
+app.post("/salvaresposta", (require,response) =>{
+    var corpo = require.body.corpo;
+    var id = require.body.pergunta;
+    console.log(id)
+    Resposta.create({
+        corpo: corpo
+        ,perguntaId: id
+    }).then(()=>{
+        response.redirect("/pergunta/"+id)
+    });
+
+});
 
 
 
