@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 const connection = require("./database/database");
+const Category = require("./categories/Category");
+const Article = require("./articles/Article");
 
 //ROUTES
 const categoriesController = require("./categories/CategoriesController");
