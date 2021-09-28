@@ -41,7 +41,10 @@
                             <%=article.category.title%>
                         </td>
                         <td>
-                            
+                            <form action="/articles/delete" method="post" style="display: inline;" onsubmit="confirma(event)">
+                                <input type="hidden" name="id" value="<%= article.id %> ">
+                                <button type="submit" class="btn btn-danger">Deletar</button>
+                            </form>
                         </td>
                     </tr>
                <% }); %> 

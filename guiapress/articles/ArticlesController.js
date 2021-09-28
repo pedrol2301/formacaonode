@@ -38,5 +38,23 @@ router.post('/articles/save',(require,response)=>{
         response.redirect("/admin/articles")
     });
 });
+router.post("/articles/delete", (require,response)=>{
+    var id = require.body.id;
+    if (id !=undefined) {
+        if (!isNaN(id)) {
+            Article.destroy({
+                where: {
+                    id:id
+                }
+            }).then(()=>{
+                response.redirect("/admin/articles");
+            })
+        }else{
+            response.redirect("/admin/articles");
+        }
+    }else{
+        response.redirect("/admin/articles");
+    }
+});
 
 module.exports = router;
