@@ -7,13 +7,15 @@
                 <h2>Editar Artigo</h2>
             </div>
             <div class="card-body">
-                <form action="/articles/save" method="post">
-                    <input class="form-control" type="text" name="title" placeholder="Defina o titulo do Artigo"><br>
-                    <textarea class="form-control" name="body" placeholder="Escreva o artigo aqui!" id="article"></textarea><br>
+                <form action="/articles/update" method="post">
+                    <input type="hidden" name="id" value="<%=article.id%>">
+                    <input class="form-control" type="text" name="title" value="<%= article.title %> " placeholder="Defina o titulo do Artigo"><br>
+                    <textarea class="form-control" name="body" placeholder="Escreva o artigo aqui!" id="article"><%- article.body %> </textarea><br>
                     <label>Categoria</label>
                     <select name="category" class="form-control">
+                        <option value=""></option>
                         <% categories.forEach((category)=>{%>
-                            <option value="<%=category.id %> "><%= category.title %> </option>
+                            <option <%=category.id==article.categoryId?'selected':''%> value="<%=category.id %> "><%= category.title %> </option>
                        <%}); %> 
                     </select><br>
                     <button type="submit" class="btn btn-dark">Salvar</button>
