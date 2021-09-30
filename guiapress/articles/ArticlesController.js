@@ -8,7 +8,9 @@ router.get('/admin/articles',(require,response)=>{
     Article.findAll({
         include:[{
             model: Category
-        }]
+        }], order: [
+            ['id','desc']
+        ]
     }).then((articles)=>{
         response.render("admin/articles/index",{
             articles:articles
@@ -107,24 +109,33 @@ router.get('/articles/page/:num',(require,response)=>{
     if (isNaN(page) || page==1) {
         offset = 0;
     }else{
-        offset = parseInt(page) * 4;
+        offset = (parseInt(page) - 1) * 4;
     }
     Article.findAndCountAll({
-        limit: 4
+        order:[['id','Desc']]
+        ,limit: 4
         ,offset:offset
     }).then(articles =>{
         var next;
 
-        if(offset +4 >= articles.count){
+        if(offset + 4 >= articles.count){
             next = false
         }else{
             next = true;
         }
+
         var result ={
-            next: next
+            page : parseInt(page)
+            ,next: next
             ,articles:articles
         }
-        response.json(result);
+        Category.findAll().then(categories =>{
+            response.render("admin/articles/page",{
+                result : result
+                ,categories: categories
+            });
+        })
+        
     });
 });
 

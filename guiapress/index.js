@@ -3,10 +3,12 @@ const app = express();
 const connection = require("./database/database");
 const Category = require("./categories/Category");
 const Article = require("./articles/Article");
+const User = require("./users/Users");
 
 //ROUTES
 const categoriesController = require("./categories/CategoriesController");
 const articlesController = require("./articles/ArticlesController");
+const usersController = require("./users/UsersController");
 
 //VIEW ENGINE
 app.set('view engine','ejs');
@@ -26,10 +28,12 @@ connection.authenticate().then(()=>{
 
 app.use('/',categoriesController);
 app.use('/',articlesController);
+app.use('/',usersController);
 
 app.get("/",(require,response)=>{
     Article.findAll({
         order:[['id','Desc']]
+        ,limit:4
     }).then(articles =>{
         Category.findAll().then(categories =>{
             response.render("index",{
