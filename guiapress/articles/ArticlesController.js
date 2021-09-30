@@ -113,7 +113,18 @@ router.get('/articles/page/:num',(require,response)=>{
         limit: 4
         ,offset:offset
     }).then(articles =>{
-        response.json(articles);
+        var next;
+
+        if(offset +4 >= articles.count){
+            next = false
+        }else{
+            next = true;
+        }
+        var result ={
+            next: next
+            ,articles:articles
+        }
+        response.json(result);
     });
 });
 
