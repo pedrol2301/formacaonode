@@ -1,0 +1,66 @@
+<%- include("../../partials/header.ejs") %>
+<%- include("../../partials/navbar.ejs") %>
+<body>
+    <div class="container">
+        <h2>Usuários</h2>
+        <a href="/admin/users/new" class="btn btn-dark">Novo Usuário</a>
+        <hr>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>
+                        ID
+                    </th>
+                    <th>
+                        Nome
+                    </th>
+                    <th>
+                        E-mail
+                    </th>
+                    <th>
+                        Admin
+                    </th>
+                    <th>
+                        Ações
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <% users.forEach((user)=>{ %>
+                    <tr>
+                        <td>
+                            <%=user.id%>
+                        </td>
+                        <td>
+                            <%=user.name%>
+                        </td>
+                        <td>
+                            <%=user.email%>
+                        </td>
+                        <td>
+                            <%=user.admin%>
+                        </td>
+                        <td>
+                            <form action="/articles/delete" method="post" style="display: inline;" onsubmit="confirma(event)">
+                                <input type="hidden" name="id" value="<%= user.id %> ">
+                                <button type="submit" class="btn btn-danger">Deletar</button>
+                            </form>
+                        </td>
+                    </tr>
+               <% }); %> 
+            </tbody>
+        </table>
+    </div>
+    
+</body>
+<%- include("../../partials/footer.ejs") %>
+<script>
+function confirma(event){
+    
+   if(confirm("Deseja deletar este registro?")){
+
+   }else{
+    event.preventDefault();
+   }
+}
+</script>

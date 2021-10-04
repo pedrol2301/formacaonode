@@ -3,7 +3,7 @@ const app = express();
 const connection = require("./database/database");
 const Category = require("./categories/Category");
 const Article = require("./articles/Article");
-const User = require("./users/Users");
+const User = require("./users/User");
 
 //ROUTES
 const categoriesController = require("./categories/CategoriesController");
