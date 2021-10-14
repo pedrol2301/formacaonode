@@ -8,20 +8,30 @@ router.get("/admin/users/new", (require,response) =>{
 });
 
 router.post("/users/save", (require,response) =>{
-    var salt = bcrypt.genSaltSync(10);
-    var hash = bcrypt.hashSync(require.body.senha, salt);
 
-    User.create({
-        email: require.body.email
-        ,name: require.body.name
-        ,password: hash
-        ,admin: require.body.admin
-    }).then(() =>{
-        response.redirect("/admin/users");
-    }).catch((err) =>{
-        response.redirect("/admin/users");
+    User.findOne({where:{email:require.body.email}}).then(user =>{
+        if (user == undefined) {
+                var salt = bcrypt.genSaltSync(10);
+                var hash = bcrypt.hashSync(require.body.senha, salt);
+
+                User.create({
+                    email: require.body.email
+                    ,name: require.body.name
+                    ,password: hash
+                    ,admin: require.body.admin
+                }).then(() =>{
+                    response.redirect("/admin/users");
+                }).catch((err) =>{
+                    response.redirect("/admin/users");
+                });
+                //response.json(require.body);
+        }else{
+            response.redirect("/admin/users/new")
+        }
+    }).catch(err =>{
+        console.log(err);
+        response.redirect("/admin/users/new")
     });
-    //response.json(require.body);
 });
 
 router.get("/admin/users", (require,response) =>{
@@ -29,6 +39,15 @@ router.get("/admin/users", (require,response) =>{
         response.render("admin/users/index",{
             users:users
         });
+    })
+});
+router.post("/users/delete", (require,response) =>{
+    User.destroy({
+        where:{
+            id:require.body.id
+        }
+    }).then(()=>{
+        response.redirect("/admin/users")
     })
 });
 

@@ -41,8 +41,8 @@
                             <%=user.admin%>
                         </td>
                         <td>
-                            <form action="/articles/delete" method="post" style="display: inline;" onsubmit="confirma(event)">
-                                <input type="hidden" name="id" value="<%= user.id %> ">
+                            <form action="/users/delete" method="post" style="display: inline;" onsubmit="confirma(event)">
+                                <input type="hidden" name="id" value="<%= user.id %>">
                                 <button type="submit" class="btn btn-danger">Deletar</button>
                             </form>
                         </td>
@@ -53,7 +53,6 @@
     </div>
     
 </body>
-<%- include("../../partials/footer.ejs") %>
 <script>
 function confirma(event){
     
@@ -64,3 +63,4 @@ function confirma(event){
    }
 }
 </script>
+<%- include("../../partials/footer.ejs") %>
