@@ -2,8 +2,9 @@ const express = require("express");
 const router = express.Router();
 const User = require("./User");
 const bcrypt = require("bcryptjs");
+const auth = require("../middlewares/auth")
 
-router.get("/admin/users/new", (require,response) =>{
+router.get("/admin/users/new", auth,(require,response) =>{
     response.render("admin/users/new");
 });
 
@@ -34,7 +35,7 @@ router.post("/users/save", (require,response) =>{
     });
 });
 
-router.get("/admin/users", (require,response) =>{
+router.get("/admin/users",auth, (require,response) =>{
     User.findAll().then(users =>{
         response.render("admin/users/index",{
             users:users

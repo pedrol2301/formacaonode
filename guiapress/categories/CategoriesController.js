@@ -2,8 +2,9 @@ const express = require("express");
 const router = express.Router();
 const Category = require("./Category")
 const slugify = require("slugify");
+const auth = require("../middlewares/auth")
 
-router.get('/admin/categories/new',(require,response)=>{
+router.get('/admin/categories/new',auth,(require,response)=>{
     response.render("admin/categories/new");
 });
 router.post("/categories/save", (require,response) =>{
@@ -22,7 +23,7 @@ router.post("/categories/save", (require,response) =>{
     }
 });
 
-router.get("/admin/categories", (require,response)=>{
+router.get("/admin/categories",auth, (require,response)=>{
     Category.findAll({
         raw:true
         ,order: [['id','desc']]

@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const session = require("express-session");
 const bcrypt = require("bcryptjs");
+const auth = require("./middlewares/auth")
 const connection = require("./database/database");
 const Category = require("./categories/Category");
 const Article = require("./articles/Article");
@@ -42,7 +43,7 @@ app.use('/',categoriesController);
 app.use('/',articlesController); 
 app.use('/',usersController);
 
-app.get("/",(require,response)=>{
+app.get("/",auth,(require,response)=>{
     Article.findAll({
         order:[['id','Desc']]
         ,limit:4
@@ -56,7 +57,7 @@ app.get("/",(require,response)=>{
     });
     
 });
-app.get("/:id",(require,response)=>{
+app.get("/:id",auth,(require,response)=>{
 
     var id = require.params.id
 
@@ -79,7 +80,7 @@ app.get("/:id",(require,response)=>{
     });
     
 });
-app.get("/category/:id",(require,response)=>{
+app.get("/category/:id",auth,(require,response)=>{
 
     var id = require.params.id
 

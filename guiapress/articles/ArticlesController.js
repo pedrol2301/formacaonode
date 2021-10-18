@@ -3,8 +3,9 @@ const router = express.Router();
 const Category = require("../categories/Category")
 const Article = require("./Article")
 const slugify = require("slugify")
+const auth = require("../middlewares/auth")
 
-router.get('/admin/articles',(require,response)=>{
+router.get('/admin/articles',auth,(require,response)=>{
     Article.findAll({
         include:[{
             model: Category
@@ -19,7 +20,7 @@ router.get('/admin/articles',(require,response)=>{
     
 });
 
-router.get('/admin/articles/new',(require,response)=>{
+router.get('/admin/articles/new',auth,(require,response)=>{
     Category.findAll().then((categories)=>{
         response.render("admin/articles/new",{
             categories:categories
@@ -58,7 +59,7 @@ router.post("/articles/delete", (require,response)=>{
         response.redirect("/admin/articles");
     }
 });
-router.get("/admin/articles/edit/:id", (require,response) =>{
+router.get("/admin/articles/edit/:id",auth, (require,response) =>{
     var id = require.params.id
     if (isNaN(id)) {
         response.redirect("/admin/articles");
