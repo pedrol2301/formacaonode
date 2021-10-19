@@ -19,6 +19,8 @@ const User = connection.define('users',{
         ,allowNull: false
         ,defaultValue: "N"
     }
+},{
+    indexes :[{ unique : true , fields: ['email']}]
 });
 
 //User.sync({force:true});

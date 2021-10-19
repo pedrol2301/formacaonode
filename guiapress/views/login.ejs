@@ -1,0 +1,29 @@
+<%- include('partials/header.ejs') %>
+<div class="container">
+    <div class="card mt-5">
+        <div class="card-header">
+            <h2>Login</h2>
+        </div>
+        <div class="card-body">
+            <form action="/authenticate" method="post">
+                <div class="col-md-12">
+                    <label for="email">Email:</label>
+                </div>
+                <div class="col-md-12">
+                    <input type="text" class="form-control" autocomplete="off" name="email" id="email">
+                </div>
+                <div class="col-md-12">
+                    <label for="password">Senha:</label>
+                </div>
+                <div class="col-md-12">
+                    <input type="password" class="form-control" name="password" id="password">
+                </div>
+                <br>
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-dark">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<%-include('partials/footer.ejs') %>

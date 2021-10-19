@@ -1,9 +1,12 @@
 const express = require("express");
 const app = express();
+const session = require("express-session");
+const bcrypt = require("bcryptjs");
+const auth = require("./middlewares/auth")
 const connection = require("./database/database");
 const Category = require("./categories/Category");
 const Article = require("./articles/Article");
-const User = require("./users/Users");
+const User = require("./users/User");
 
 //ROUTES
 const categoriesController = require("./categories/CategoriesController");
@@ -12,6 +15,16 @@ const usersController = require("./users/UsersController");
 
 //VIEW ENGINE
 app.set('view engine','ejs');
+
+
+//SESSIONS
+app.use(session({
+    secret: "slkjdlkasjldksa"
+    ,cookie:{
+        maxAge:3600000
+    }
+}));
+
 
 // STATIC
 app.use(express.static('public'));
@@ -27,10 +40,10 @@ connection.authenticate().then(()=>{
 });
 
 app.use('/',categoriesController);
-app.use('/',articlesController);
+app.use('/',articlesController); 
 app.use('/',usersController);
 
-app.get("/",(require,response)=>{
+app.get("/",auth,(require,response)=>{
     Article.findAll({
         order:[['id','Desc']]
         ,limit:4
@@ -44,7 +57,7 @@ app.get("/",(require,response)=>{
     });
     
 });
-app.get("/:id",(require,response)=>{
+app.get("/:id",auth,(require,response)=>{
 
     var id = require.params.id
 
@@ -67,7 +80,7 @@ app.get("/:id",(require,response)=>{
     });
     
 });
-app.get("/category/:id",(require,response)=>{
+app.get("/category/:id",auth,(require,response)=>{
 
     var id = require.params.id
 
@@ -91,7 +104,33 @@ app.get("/category/:id",(require,response)=>{
     });
     
 });
+app.get("/admin/login", (require,response) =>{
+    response.render("login");
+});
+app.post("/authenticate", (require,response) =>{
+    User.findOne({
+        where:{
+            email:require.body.email
+        }
+    }).then(user =>{
+        if (user != undefined) {
+            var hash = bcrypt.compareSync(require.body.password,user.password);
 
+            if (hash) {
+                require.session.user = {
+                    id: user.id
+                    ,email:user.email
+                    ,admin: user.admin
+                }
+                response.json(require.session.user);
+            }else{
+                response.redirect("/admin/login")
+            }
+        }else{
+            response.redirect("/admin/login")
+        }
+    })
+});
 app.listen(8181, ()=>{
 console.log("😎 👍")
 });
