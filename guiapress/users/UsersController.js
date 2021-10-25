@@ -4,6 +4,10 @@ const User = require("./User");
 const bcrypt = require("bcryptjs");
 const auth = require("../middlewares/auth")
 
+router.get("/admin/users", (require,response) =>{
+    response.render("/users/index");
+});
+
 router.get("/admin/users/new", auth,(require,response) =>{
     response.render("admin/users/new");
 });
