@@ -122,7 +122,7 @@ app.post("/authenticate", (require,response) =>{
                     ,email:user.email
                     ,admin: user.admin
                 }
-                response.json(require.session.user);
+                response.redirect("/");
             }else{
                 response.redirect("/admin/login")
             }
