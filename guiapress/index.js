@@ -131,6 +131,10 @@ app.post("/authenticate", (require,response) =>{
         }
     })
 });
+app.get("/logout", (require,response) =>{
+    require.session.user = undefined;
+    response.redirect("/");
+});
 app.listen(8181, ()=>{
 console.log("😎 👍")
 });

@@ -9,7 +9,9 @@ router.get("/admin/users", (require,response) =>{
 });
 
 router.get("/admin/users/new",(require,response) =>{
-    response.render("admin/users/new");
+    response.render("admin/users/new",{
+        require : require
+    });
 });
 
 router.post("/users/save", (require,response) =>{

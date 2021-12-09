@@ -15,12 +15,15 @@
                 <br>
                 <label>Senha</label>
                 <input type="password" placeholder="*******" name="senha" class="form-control">
+                <br>
+                <% if(require.session.user !== undefined){ %> 
                 <label>Admin</label>
                 <br>
                 <input type="radio" name="admin" value="Y"> <label> Sim</label>
                 <br>
                 <input type="radio" name="admin" value="N"> <label> Não</label>
                 <br>
+                <% } %> 
                 <button id="submit" type="submit" class="btn btn-dark btn-block">Criar</button>
             </form>
 
