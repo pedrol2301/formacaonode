@@ -1,0 +1,3 @@
+function enviaEmail(corpo, para) {
+    
+}
