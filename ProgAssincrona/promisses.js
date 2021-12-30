@@ -19,7 +19,10 @@ function enviarEmail(corpo, para){
         setTimeout(() => {  
             var deuErro = false;
             if(!deuErro){
-                resolve({time: 6, to: "victor@udemy.com"}) // Promessa OK!
+                resolve(
+                    {to: para,
+                    corpo: corpo
+                }) // Promessa OK!
             }else{
                 reject("Fila cheia") // Foi mal, eu falhei :(
             }
@@ -31,11 +34,20 @@ function enviarEmail(corpo, para){
 async function _acao() {
     var iduser = await pegarId();
     var emailuser = await buscarEmailNoBanco(iduser);
-    enviarEmail("Olá, como vai?",emailuser).then(() => {
-        console.log("Email enviado, para o usuário com id: " + iduser)
-    }).catch(err => {
-        console.log(err);
-    });
+    try {
+        console.time("Enviado em")
+        var info = await enviarEmail("Olá, como vai?",emailuser);
+        console.log(`Email enviado!
+                    UserId: ${iduser} 
+                    Email: ${info.to}
+                    ------------------
+                    ${info.corpo}
+                    ------------------`);
+        console.timeEnd("Enviado em");
+    } catch (error) {
+        console.log(error);
+    }
+    
 }
 
 console.log("Inicio!");
