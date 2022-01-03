@@ -6,7 +6,7 @@ const util = require('util');
 class Reader{
 
     constructor(){
-        this.reader= util.promisify(fs.readFile);
+        this.reader= util.promisify(fs.readFile);// função que transforma functions em promisses
     }
 
     async Read(filepath){

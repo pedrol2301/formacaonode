@@ -6,10 +6,10 @@ class Table{
         this.rows = arr;
     }
 
-    get RowCount(){
+    get RowCount(){ //Campos virtuais
         return this.rows.length
     }
-    get ColumnCount(){
+    get ColumnCount(){ //Campos virtuais
         return this.header.length
     }
 }
