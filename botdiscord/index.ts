@@ -21,8 +21,69 @@ const client = new DiscordJs.Client({
 });
 
 client.on("ready",()=>{
+
     console.log("ready");
+
+
+    const guildId = "312709484705349632";
+    const guild = client.guilds.cache.get(guildId);
+    let commands;
+
+    if(guild){
+        commands = guild.commands;
+    }else{
+        commands = client.application?.commands;
+    }
+
+    commands?.create({
+        name: "novoxingamento"
+        ,description: "Ensina o menino bot um novo xingamento"
+        ,options : [
+            {
+                name:"xingamento"
+                ,description: "Novo xingamento pro bot"
+                ,required : true
+                ,type: DiscordJs.Constants.ApplicationCommandOptionTypes.STRING 
+            }
+        ]
+    });
+    commands?.create({
+        name: "xingaalguem"
+        ,description: "Ensina o menino bot um novo xingamento"
+        ,options : [
+            {
+                name:"xingado"
+                ,description: "Quem será xingado"
+                ,required : true
+                ,type: DiscordJs.Constants.ApplicationCommandOptionTypes.USER 
+            }
+        ]
+    });
 });
+
+client.on("interactionCreate", async (interaction) =>{
+
+    if(!interaction.isCommand()){
+        return;
+    }
+
+    const { commandName, options} = interaction;
+
+    if (commandName == "novoxingamento") {
+        const x = options.getString("xingamento");
+        xingamento.push(x);
+        interaction.reply({
+            content:`Agora eu sei falar ${x}`
+        })
+        
+    }else if(commandName == "xingaalguem"){
+        let random = Math.floor(Math.random() * xingamento.length);
+        interaction.reply({
+            content:`${xingamento[random]} ${options.getMember("xingado")}`
+        })
+    }
+});
+
 
 client.on('messageCreate',(message)=>{
     if(message.content === 'teste'){
