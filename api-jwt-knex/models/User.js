@@ -1,5 +1,6 @@
 var knex = require("../database/connection");
 var bcrypt = require("bcrypt");
+const { where } = require("../database/connection");
 
 class User{
 
@@ -59,15 +60,55 @@ class User{
         }
     }
 
-    async upd(id,email,name, role){
+    async updUser(id,email,name, role){
 
         var user = await this.findById(id);
         if(user){
-           // await knex.update({email,name,role}).
+            var editUser = {};
+            if(email){
+                if(email != user.email){
+                    var femail = await this.findEmail(email);
+                    if (femail == false) {
+                        editUser.email = email;
+                    }else{
+                        return {status: false,err:"Email vinculado a outro usuário!"}
+                    }
+                }       
+            }
+            if(name){
+                editUser.name = name;
+            }
+            if(role != undefined){
+                editUser.role = role;
+            }
+            try {
+                await knex.update(editUser).where({id:id}).table('users');
+                return {status: true}
+            } catch (error) {
+                console.log(error);
+                return {status: false,err:error}
+            }
         }else{
             return {status: false,err:"Usuário não encontrado"}
         }
 
+    }
+
+    async delete(id){
+        if(id != undefined){
+            var res = await this.findById(id);
+            if(res != undefined){
+                try {
+                    await knex.delete().where({id:id}).table("users");
+                    return {status:true,Msg:"Deletado!"}
+                } catch (error) {
+                    console.log(error);
+                    return {status:false,Msg:error}
+                }
+            }
+        }else{
+            return {status: false,err:"Usuário não encontrado"}
+        }
     }
 
 }

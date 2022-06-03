@@ -45,6 +45,44 @@ class UsersController{
 
 
     }
+
+    async editUser(req,res){
+        var {id,name,role,email} = req.body;
+
+        var stresp = await User.updUser(id,email,name,role);
+        if (stresp != undefined) {
+            if (stresp.status == true) {
+                res.status(200);
+                res.json("Usuário atualizado!")
+            }else{
+                res.status(406);
+                res.json(stresp.err);
+            }
+        }else{
+            res.status(400);
+            res.json("Falha na operação");
+        }
+        
+    }
+
+    async deleteUser(req,res){
+        var id = req.params.id;
+
+        var stresp = await User.delete(id);
+        if (stresp != undefined) {
+            if (stresp.status == true) {
+                res.status(200);
+                res.json(stresp.Msg)
+            }else{
+                res.status(406);
+                res.json(stresp.Msg);
+            }
+        }else{
+            res.status(400);
+            res.json(`Falha na operação ${id}`);
+        }
+        
+    }
 }
 
 module.exports = new UsersController();
