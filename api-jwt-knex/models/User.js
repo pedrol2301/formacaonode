@@ -60,6 +60,22 @@ class User{
         }
     }
 
+    async findByEmail(email){
+
+        try {
+            var result = await knex.select(['id','name','email','role']).from("users").where({email});
+            if(result.length > 0){
+                return result[0];
+            }else{
+                return undefined;
+            }
+        } catch (error) {
+            console.log(error);
+            return undefined;
+            
+        }
+    }
+
     async updUser(id,email,name, role){
 
         var user = await this.findById(id);
@@ -100,10 +116,10 @@ class User{
             if(res != undefined){
                 try {
                     await knex.delete().where({id:id}).table("users");
-                    return {status:true,Msg:"Deletado!"}
+                    return {status:true,msg:"Deletado!"}
                 } catch (error) {
                     console.log(error);
-                    return {status:false,Msg:error}
+                    return {status:false,msg:error}
                 }
             }
         }else{

@@ -1,4 +1,5 @@
 var User = require("../models/User")
+var PasswordToken = require("../models/Password");
 
 class UsersController{
 
@@ -72,16 +73,31 @@ class UsersController{
         if (stresp != undefined) {
             if (stresp.status == true) {
                 res.status(200);
-                res.json(stresp.Msg)
+                res.json(stresp.msg)
             }else{
                 res.status(406);
-                res.json(stresp.Msg);
+                res.json(stresp.msg);
             }
         }else{
             res.status(400);
             res.json(`Falha na operação ${id}`);
         }
         
+    }
+
+    async recoverPassword(req,res){
+
+        var { email } = req.body.email
+        
+        var result = await PasswordToken.create(email);
+
+        if(result.status){
+            res.status(200);
+            res.json({token:result.token})
+        }else{
+            res.status(406);
+            res.send(result.err)
+        }
     }
 }
 
