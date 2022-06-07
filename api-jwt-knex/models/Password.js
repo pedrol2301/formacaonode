@@ -31,6 +31,10 @@ class PasswordToken{
         }
     }
 
+    async validate(token){
+
+    }
+
 }
 
 module.exports = new PasswordToken();

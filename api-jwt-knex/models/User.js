@@ -1,6 +1,7 @@
 var knex = require("../database/connection");
 var bcrypt = require("bcrypt");
 const { where } = require("../database/connection");
+const e = require("express");
 
 class User{
 
