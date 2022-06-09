@@ -5,7 +5,9 @@
                 <div class="media">
                     <div class="media-content">
                         <p class="title is-4">{{num}} - {{upper}}</p>
-                        <p class="subtitle is-6">{{pokemon.type}}</p>
+                        <div v-for="(type,index) in pokemon.types" :key="index">
+                            <p class="subtitle is-6">{{type}}</p>
+                        </div>
                     </div>
                 </div>
                 <div class="card-image">
@@ -29,10 +31,16 @@ import axios from 'axios';
 export default {
     created: function(){
         axios.get(this.url).then(res =>{
-            this.pokemon.type = res.data.types[0].type.name;
-            this.pokemon.front = res.data.sprites.front_default;
-            this.pokemon.back = res.data.sprites.back_default;
-            this.currentImg = res.data.sprites.front_default;
+            
+            this.pokemon.front = res.data.sprites.versions["generation-v"]['black-white']['animated'].front_default;
+            this.pokemon.back = res.data.sprites.versions["generation-v"]['black-white']['animated'].back_default;
+            this.currentImg = res.data.sprites.versions["generation-v"]['black-white']['animated'].front_default;
+
+            
+            for(let i in res.data.types){
+                this.pokemon.types.push(res.data.types[i].type.name);
+            }
+             //= res.data.types[0].type.name;
             //console.log(res.data);
         })
     },
@@ -41,7 +49,7 @@ export default {
             isFront: true,
             currentImg:'',
             pokemon :{
-                type:'',
+                types:[],
                 front:'',
                 back:''
             }
