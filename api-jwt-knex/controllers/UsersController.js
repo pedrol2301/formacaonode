@@ -102,10 +102,24 @@ class UsersController{
             }
         }else{
             res.status(400);
-            res.send("Somethig went wrong");
+            res.send("Algo deu errado");
         }
 
         
+    }
+
+    async changePassword(req,res){
+        var token = req.body.token;
+        var password = req.body.password;
+
+        var isValid = await PasswordToken.validate(token);
+        if(isValid.status){
+            await user.changePassword(password,isValid.tk.user_id,isValid.tk.token);
+            res.status(200);
+            res.send("Senha alterada!");
+        }else{
+            res.status(406).send("Token inválido!");
+        }
     }
 }
 

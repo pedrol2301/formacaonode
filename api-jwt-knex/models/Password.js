@@ -33,6 +33,30 @@ class PasswordToken{
 
     async validate(token){
 
+        try {
+            var result = await knex.select().where({token}).table("passwordtoken");
+            
+        if(result.length > 0){
+            var tk = result[0];
+            if(tk.used){
+                return {
+                    status:false
+                };
+            }else{
+                return {
+                    status:true,
+                    tk
+                };
+            }
+        }else{
+            return {
+                status:false
+            };
+        }
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
     }
 
 }
