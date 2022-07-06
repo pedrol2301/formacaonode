@@ -1,6 +1,8 @@
 var User = require("../models/User")
 var PasswordToken = require("../models/Password");
+var jwt = require("jsonwebtoken");
 
+var secret = "AmoMamãe<3";
 class UsersController{
 
     async index(req,res){
@@ -114,12 +116,16 @@ class UsersController{
 
         var isValid = await PasswordToken.validate(token);
         if(isValid.status){
-            await user.changePassword(password,isValid.tk.user_id,isValid.tk.token);
+            await User.changePassword(password,isValid.token.user_id,isValid.token.token);
             res.status(200);
             res.send("Senha alterada!");
         }else{
             res.status(406).send("Token inválido!");
         }
+    }
+
+    async login(email,senha){
+        var { email, password } = req.body;
     }
 }
 

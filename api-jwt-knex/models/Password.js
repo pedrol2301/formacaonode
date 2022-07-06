@@ -43,9 +43,10 @@ class PasswordToken{
                     status:false
                 };
             }else{
+                console.log(tk);
                 return {
                     status:true,
-                    tk
+                    token:tk
                 };
             }
         }else{
@@ -57,6 +58,10 @@ class PasswordToken{
             console.log(error);
             return false;
         }
+    }
+
+    async setUsed(token){
+        await knex.update({used:1}).where({token}).table("passwordtoken");
     }
 
 }
