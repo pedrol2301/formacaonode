@@ -1,22 +1,23 @@
 var User = require("../models/User")
 var PasswordToken = require("../models/Password");
 var jwt = require("jsonwebtoken");
+var bcrypt = require("bcrypt");
 
 var secret = "AmoMamãe<3";
 class UsersController{
 
     async index(req,res){
 
-        var result = await User.findAll();
+        let result = await User.findAll();
         res.json(result);
 
 
     }
 
     async findUser(req, res){
-        var id = req.params.id;
+        let id = req.params.id;
 
-        var user = await User.findById(id);
+        let user = await User.findById(id);
         if(user)
             res.status(200).json(user);
         else
@@ -26,7 +27,7 @@ class UsersController{
 
     async create(req, res){
         console.log(req.body);
-        var {email, name, password } = req.body
+        let {email, name, password } = req.body
 
         if(email == undefined){
             res.status(400);
@@ -34,7 +35,7 @@ class UsersController{
             return;
         }
 
-        var NotUnique = await User.findEmail(email);
+        let NotUnique = await User.findEmail(email);
 
         if(NotUnique){
             res.status(406);
@@ -50,9 +51,9 @@ class UsersController{
     }
 
     async editUser(req,res){
-        var {id,name,role,email} = req.body;
+        let {id,name,role,email} = req.body;
 
-        var stresp = await User.updUser(id,email,name,role);
+        let stresp = await User.updUser(id,email,name,role);
         if (stresp != undefined) {
             if (stresp.status == true) {
                 res.status(200);
@@ -69,9 +70,9 @@ class UsersController{
     }
 
     async deleteUser(req,res){
-        var id = req.params.id;
+        let id = req.params.id;
 
-        var stresp = await User.delete(id);
+        let stresp = await User.delete(id);
         if (stresp != undefined) {
             if (stresp.status == true) {
                 res.status(200);
@@ -89,9 +90,9 @@ class UsersController{
 
     async recoverPassword(req,res){
 
-        var {email}  = req.body;
+        let {email}  = req.body;
         
-        var result = await PasswordToken.create(email);
+        let result = await PasswordToken.create(email);
 
 
         if(result){
@@ -111,10 +112,10 @@ class UsersController{
     }
 
     async changePassword(req,res){
-        var token = req.body.token;
-        var password = req.body.password;
+        let token = req.body.token;
+        let password = req.body.password;
 
-        var isValid = await PasswordToken.validate(token);
+        let isValid = await PasswordToken.validate(token);
         if(isValid.status){
             await User.changePassword(password,isValid.token.user_id,isValid.token.token);
             res.status(200);
@@ -124,8 +125,17 @@ class UsersController{
         }
     }
 
-    async login(email,senha){
-        var { email, password } = req.body;
+    async login(req,res){
+        let { email, password } = req.body;
+
+        let user = await User.findByEmail(email);
+
+        if (user) {
+            let result = await bcrypt.compare(password,user.password);
+            res.json({status:result});
+        } else {
+            res.json({status:false})
+        }
     }
 }
 
