@@ -59,12 +59,10 @@ class UsersController{
                 res.status(200);
                 res.json("Usuário atualizado!")
             }else{
-                res.status(406);
-                res.json(stresp.err);
+                res.status(406).json(stresp.err);
             }
         }else{
-            res.status(400);
-            res.json("Falha na operação");
+            res.status(400).json("Falha na operação");
         }
         
     }
@@ -118,8 +116,7 @@ class UsersController{
         let isValid = await PasswordToken.validate(token);
         if(isValid.status){
             await User.changePassword(password,isValid.token.user_id,isValid.token.token);
-            res.status(200);
-            res.send("Senha alterada!");
+            res.status(200).send("Senha alterada!");
         }else{
             res.status(406).send("Token inválido!");
         }
@@ -132,9 +129,21 @@ class UsersController{
 
         if (user) {
             let result = await bcrypt.compare(password,user.password);
-            res.json({status:result});
+            if (result) {
+                let token = jwt.sign({ 
+                    email:user.email,
+                    role:user.role 
+                }, secret);
+                res.status(200).json({
+                    status:result,
+                    token
+                });
+            } else {
+                res.status(406).send("Senha Incorreta!");
+            }
+            
         } else {
-            res.json({status:false})
+            res.status(406).json({status:false})
         }
     }
 }
