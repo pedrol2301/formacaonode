@@ -6,3 +6,13 @@ CREATE TABLE `knexjs`.`users` (
   `role` INT NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE);
+
+  CREATE TABLE `passwordtoken` (
+  `idpasswordtoken` int unsigned NOT NULL AUTO_INCREMENT,
+  `token` varchar(200) NOT NULL,
+  `user_id` int NOT NULL,
+  `used` tinyint DEFAULT NULL,
+  PRIMARY KEY (`idpasswordtoken`),
+  KEY `user-id_idx` (`user_id`),
+  CONSTRAINT `user-id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
