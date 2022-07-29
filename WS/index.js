@@ -4,8 +4,9 @@ var http = require("http").createServer(app);
 var io = require("socket.io")(http);
 
 io.on("connection",(socket) =>{
-    console.log(socket);
-    console.log(socket.id);
+    socket.on("newmsg",(data)=>{
+        io.emit("showmsg",(data));
+    })
 })
 
 app.set("view engine", "ejs");
