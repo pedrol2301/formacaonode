@@ -1,7 +1,9 @@
 var express = require("express");
 var app = express();
 var http = require("http").createServer(app);
-var io = require("socket.io")(http);
+var io = require("socket.io")(http, {
+    cors: {origin:"*"} //Desativa o cors
+});
 
 io.on("connection",(socket) =>{
     socket.on("newmsg",(data)=>{
