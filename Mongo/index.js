@@ -26,5 +26,8 @@ Article.find({}).then(articles =>{
     console.log(err)
 })
 
+// DELETE NO MONGO
+// Article.findByIdAndDelete("62f265819d8cf3530ae2d19a").then(()=>{console.log("Dado Removido!")}).catch(err => console.log(err));
 
-// Article.findByIdAndDelete("62f265819d8cf3530ae2d19a").then(()=>{console.log("Dado Removido!")}).catch(err => console.log(err))
+// UPDATE NO MONGO
+// Article.findByIdAndUpdate("62f26508f3cc79ef4ea6ff10",{title:"Tilambuco"}).then(()=>{console.log("update!")}).catch(err => console.log(err));
