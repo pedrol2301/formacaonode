@@ -16,4 +16,6 @@ app.get("/", (req, res) => {
     res.send("Oi!");
 });
 
-app.listen(8080, () => {});
+app.listen(8080, () => {
+    console.log("🤘🤘");
+});
