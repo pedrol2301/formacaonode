@@ -5,8 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendário</title>
-    <link rel="stylesheet" href="../node_modules/fullcalendar/main.css">
-    <script rel="stylesheet" href="../node_modules/fullcalendar/main.js"></script>
+    <link rel="stylesheet" href="main.css">
+    <script src="main.js"></script>
 </head>
 <body>
     <div class="container">
@@ -17,7 +17,13 @@
 
     var element = document.getElementById("calendar");
     var calendar = new FullCalendar.Calendar(element,{
-        initialView: 'dayGridMounth'
-    })
+        initialView: 'dayGridMonth',
+        locale: 'pt-br',
+        events: 'calendar',
+        eventClick: function(info){
+            //console.log(info.event.title);
+            window.location.href = '/event/'+info.event.id;
+        }
+    }).render();
 </script>
 </html>

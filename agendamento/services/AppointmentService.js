@@ -1,4 +1,5 @@
 const { default: mongoose } = require("mongoose");
+const AppointmentFactory = require("../factories/AppointmentFactory");
 const appointment = require("../models/Appointment");
 
 const Appo = mongoose.model("Appointment",appointment);
@@ -23,6 +24,35 @@ class AppointmentService {
             console.error(error);
             return false;
         }
+    }
+
+    async GetAll(finished = false){
+
+        try {
+           let appos = await Appo.find({'finished':finished})
+           let appointments = [];
+           appos.forEach(appointment =>{
+            if(appointment.date != undefined){
+                appointments.push(AppointmentFactory.Build(appointment))
+            }
+           });
+
+           return appointments;
+        } catch (error) {
+            console.error(error)
+            return [];
+        }
+        
+    }
+
+    async GetById(id){
+        try {
+
+            return await Appo.findOne({'id':id});
+         } catch (error) {
+             console.error(error)
+             return [];
+         }
     }
 }
 

@@ -32,6 +32,16 @@ app.post("/create", async (req, res) => {
     }
 });
 
+app.get("/calendar", async (req,res)=>{
+    var appointment = await AppointmentService.GetAll(false);
+    res.json(appointment)
+});
+
+app.get("/event/:id", async (req,res)=>{
+    var appointment = await AppointmentService.GetById(req.body.id);
+    res.render('event',{appointment})
+});
+
 app.listen(8080, () => {
     console.log("🤘🤘");
 });
