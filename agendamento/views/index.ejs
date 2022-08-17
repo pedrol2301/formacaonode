@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendário</title>
-    <link rel="stylesheet" href="main.css">
-    <script src="main.js"></script>
-</head>
+<%- include('partials/header.ejs') %> 
 <body>
     <div class="container">
         <div id="calendar"></div>
@@ -19,11 +10,27 @@
     var calendar = new FullCalendar.Calendar(element,{
         initialView: 'dayGridMonth',
         locale: 'pt-br',
+        expandRows: true,
         events: 'calendar',
-        eventClick: function(info){
-            //console.log(info.event.title);
-            window.location.href = '/event/'+info.event.id;
+        titleFormat :{
+            month: 'long',
+            year: 'numeric',
+            day: 'numeric',
+        },
+        eventDidMount: function (info) {
+            if (info.event.extendedProps.status === 'done') {
+
+                // Change background color of row
+                info.el.style.backgroundColor = 'red';
+
+                // Change color of dot marker
+                var dotEl = info.el.getElementsByClassName('fc-event-dot')[0];
+                if (dotEl) {
+                dotEl.style.backgroundColor = 'white';
+                }
+            }
         }
-    }).render();
+    });
+    calendar.render();
 </script>
 </html>

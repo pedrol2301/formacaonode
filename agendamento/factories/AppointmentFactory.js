@@ -13,6 +13,7 @@ class AppointmentFactory{
         let appo = {
             id: simpleAppointment._id,
             title: simpleAppointment.name + " - " + simpleAppointment.description,
+            url: '/event/'+simpleAppointment._id,
             start: startDate,
             end: startDate
 
