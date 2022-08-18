@@ -1,6 +1,8 @@
 <%- include('partials/header.ejs') %> 
+<%- include('partials/navbar.ejs') %> 
     <body>
         <div class="container">
+            <input type="hidden" id="eventId" value="<%=appointment.id%>">
             <h1>Consulta: <%=appointment.description %> </h1>
             <hr>
             <h4>Paciente: <%=appointment.name %></h4>
@@ -8,8 +10,29 @@
             <h4>CPF: <%=appointment.cpf %></h4>
             <hr>
             <% let string = appointment.finished == true?'Reagendar':'Concluir' %>
-            <button class="btn btn-success"><%=string%> consulta</button>
+            <button id="finish" status="<%=appointment.finished%>" class="btn btn-success"><%=string%> consulta</button>
 
         </div>
     </body>
 <%- include('partials/footer.ejs') %> 
+<script>
+    var eventId = $("#eventId").val() || 0;
+    $("#finish").on("click", async (event)=>{
+        let response = await fetch("/finish", { 
+                method: "POST",
+                body: "id="+eventId+"&status="+$(event.target).attr("status"),
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                }
+            });
+            if(response.status == 200){
+                if($(event.target).attr('status') == 'true'){
+                    $(event.target).attr('status','false')
+                    $(event.target).html("Concluir consulta")
+                }else{
+                    $(event.target).attr('status','true')
+                    $(event.target).html("Reagendar consulta")
+                }
+            }
+    })
+</script>

@@ -38,8 +38,18 @@ app.get("/calendar", async (req,res)=>{
 });
 
 app.get("/event/:id", async (req,res)=>{
-    var appointment = await AppointmentService.GetById(req.body.id);
+    var appointment = await AppointmentService.GetById(req.params.id);
     res.render('event',{appointment})
+});
+app.post("/finish", async (req,res)=>{
+    console.log(req.body)
+    let { id, status } = req.body
+    if(status == 'true'){
+        var appointment = await AppointmentService.Finish(id, false);
+    }else{
+        var appointment = await AppointmentService.Finish(id, true);
+    }
+    res.json(appointment)
 });
 
 app.listen(8080, () => {

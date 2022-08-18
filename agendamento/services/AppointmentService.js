@@ -47,8 +47,17 @@ class AppointmentService {
 
     async GetById(id){
         try {
+            return await Appo.findById(id);;
+         } catch (error) {
+             console.error(error)
+             return [];
+         }
+    }
 
-            return await Appo.findOne({'id':id});
+    async Finish(id,status){
+        try {
+            console.log(id)
+            return await Appo.findByIdAndUpdate(id,{"finished":status});;
          } catch (error) {
              console.error(error)
              return [];
