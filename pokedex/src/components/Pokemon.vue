@@ -1,10 +1,12 @@
 <template>
     <div id="pokemon">
-        <div class="card">
+        <div class="column card">
+            <header class="card-header">
+                <p class="card-header-title is-4">{{num}} - {{upper}}</p>
+            </header>
             <div class="card-content">
                 <div class="media">
                     <div class="media-content">
-                        <p class="title is-4">{{num}} - {{upper}}</p>
                         <div v-for="(type,index) in pokemon.types" :key="index">
                             <p class="subtitle is-6">{{type}}</p>
                         </div>
@@ -13,6 +15,7 @@
                 <div class="card-image">
                     <figure >
                         <img :src="currentImg" alt="Placeholder image">
+                        <router-view/>
                     </figure>
                 </div>
                 <div class="content">

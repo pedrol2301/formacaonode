@@ -1,15 +1,15 @@
 <template>
   <div id="app">
-    <div class="column is-half is-offset-one-quarter">
-      <div>
-        <h4 class="is-size-5">
-          Pokedex
-        </h4>
-        <input type="text" class="input is-rounded" placeholder="Buscar pokemon" v-model="busca">
-        <button id="buscaB" @click="buscar" class="button is-success is-light">Buscar</button>
-      </div>
-      <div v-for="(poke,index) in filteredPoke" :key="poke.url">
-        <PokemonC :name="poke.name" :url="poke.url" :num="index +1" />
+    <div>
+      <h4 class="is-size-5">
+        Pokedex
+      </h4>
+      <input type="text" class="input is-rounded" placeholder="Buscar pokemon" v-model="busca">
+      <button id="buscaB" @click="buscar" class="button is-success is-light">Buscar</button>
+    </div>
+    <div class="columns is-multiline is-12">
+      <div class="column is-6" v-for="(poke,index) in filteredPoke" :key="poke.url">
+        <PokemonC  :name="poke.name" :url="poke.url" :num="index +1" />
       </div>
     </div>
     <footer>By Pedro, @pedrol2301</footer>
