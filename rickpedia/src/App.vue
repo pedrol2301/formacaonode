@@ -1,10 +1,14 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link> |
-    <router-link :to="{name:'pedro',params:{dado:'lima'}}">pedro</router-link>
-    <router-view />
-  </nav>
+  <div id="app">
+    <nav>
+      <router-link to="/">Home</router-link> |
+      <router-link to="/about">About</router-link>
+    </nav>
+    <h1>Inicio</h1>
+    <h2>dede</h2>
+      <router-view/>
+    <h1>Fim</h1>
+  </div>
 </template>
 
 <style>

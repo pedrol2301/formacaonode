@@ -1,7 +1,7 @@
 <template>
     <div id="pokemon">
         <div class="column card">
-            <header class="card-header">
+            <header class="card-header is-info">
                 <p class="card-header-title is-4">{{num}} - {{upper}}</p>
             </header>
             <div class="card-content">

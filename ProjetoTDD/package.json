@@ -10,12 +10,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/jest": "^29.0.3",
+    "@types/jest": "^28.1.8",
+    "bcrypt": "^5.0.1",
     "express": "^4.18.1",
     "jest": "^29.0.3",
     "jest-environment-node": "^29.0.3",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.6.1",
     "supertest": "^6.2.4"
+  },
+  "devDependencies": {
+    "jest-jasmine2": "^29.1.2"
   }
 }
